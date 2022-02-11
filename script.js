@@ -83,3 +83,4 @@ document.getElementById('clear').addEventListener('click', e => {
 // - Add support for decible numbers (floating point) and round them to some # of digits
 // - rewrite operator functions into 1 calc function
 // - rewrite event listeners to pull from global const for equation and output
+// - add keyboard support
