@@ -9,7 +9,7 @@ function addSub (array){
         break; // and break loop
       }
       //make a temp output variable and use the operator on either side of array (opperands)
-      let outcome = parseInt(tempArray[i - 1]) + parseInt(tempArray[i + 1])
+      let outcome = parseFloat(tempArray[i - 1]) + parseFloat(tempArray[i + 1])
       tempArray.splice(i - 1, 3, outcome) // cut out the whole operator and opperands
       i--; //step back through the for loop one iteration to stay in line
     }else if (tempArray[i] == '-'){
@@ -17,7 +17,7 @@ function addSub (array){
         tempArray.splice(i,2) 
         break;
       }
-      let outcome = parseInt(tempArray[i - 1]) - parseInt(tempArray[i + 1])
+      let outcome = parseFloat(tempArray[i - 1]) - parseFloat(tempArray[i + 1])
       tempArray.splice(i - 1, 3, outcome)
       i--;
     }
@@ -28,12 +28,15 @@ function addSub (array){
 function multiDiv (array) {
   let tempArray = array
   for (let i = 0; i < tempArray.length; i++){    
-    if (tempArray[i] == '÷'){   
-      let outcome = parseInt(tempArray[i - 1]) / parseInt(tempArray[i + 1])
+    if (tempArray[i] == '/'){   
+      let outcome = parseFloat(tempArray[i - 1]) / parseFloat(tempArray[i + 1])
+      if(outcome == NaN || outcome == Infinity){
+        return 'Haha, Very Funny'
+      }
       tempArray.splice(i - 1, 3, outcome)
       i--;
     }else if (tempArray[i] == 'x'){
-      let outcome = parseInt(tempArray[i - 1]) * parseInt(tempArray[i + 1])
+      let outcome = parseFloat(tempArray[i - 1]) * parseFloat(tempArray[i + 1])
       tempArray.splice(i - 1, 3, outcome)
       i--;
     }
@@ -78,9 +81,23 @@ document.getElementById('clear').addEventListener('click', e => {
 })
 
 // ! TODO / use cases to fix
-// - Hitting equal sign when ending with an operator produces NaN
-// - Add snarky message whenever dividing by 0
-// - Add support for decible numbers (floating point) and round them to some # of digits
 // - rewrite operator functions into 1 calc function
 // - rewrite event listeners to pull from global const for equation and output
-// - add keyboard support
+
+window.addEventListener('keydown', (e) => {
+  if(e.key == 'Enter' || e.key == '='){
+    let equation = document.getElementById('equation').innerText.split(' ')  
+    let output = document.getElementById('output')
+    output.innerText = operate(equation)
+  }
+
+  if (e.key == '+' || e.key == '-' || e.key == '*' || e.key == '/'){
+    let equation = document.getElementById('equation')
+    equation.innerText += ` ${e.key} `
+  }
+
+  if (parseInt(e.key)){
+    let equation = document.getElementById('equation')
+    equation.innerText += e.key
+  }
+})
